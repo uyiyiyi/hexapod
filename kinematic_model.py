@@ -6,36 +6,41 @@ class Kinematic(object):
     def __init__(self) -> None:
         pass
 
-    def fk(self, theta, leg_name):
-        q1 = theta[0]
-        q2 = theta[1]
-        q3 = theta[2]
-        if leg_name == 'lf':
+    def fk(self, theta, leg_index):
+        if leg_index == 0 or leg_index == 2 or leg_index == 4:
+            q1 = theta[0]
+            q2 = theta[1] - 0.3
+            q3 = theta[2] + 0.42
+        if leg_index == 1 or leg_index == 3 or leg_index == 5:
+            q1 = theta[0]
+            q2 = theta[1] + 0.3
+            q3 = theta[2] - 0.42
+        if leg_index == 1:
             p1x,p1y,p1z = 0.34,0.05,-0.021
             p2x,p2y,p2z = 0,0.076,-0.05
             p3x,p3y,p3z = 0,0.25842,-0.094056
             p4 = np.matrix([0, 0.025, -0.29, 1]).transpose()
-        if leg_name == 'lm':
+        if leg_index == 3:
             p1x,p1y,p1z = 0,0.05,-0.021
             p2x,p2y,p2z = 0,0.076,-0.05
             p3x,p3y,p3z = 0,0.25842,-0.094056
             p4 = np.matrix([0, 0.025, -0.29, 1]).transpose()
-        if leg_name == 'lb':
+        if leg_index == 5:
             p1x,p1y,p1z = -0.34,0.05,-0.021
             p2x,p2y,p2z = 0,0.076,-0.05
             p3x,p3y,p3z = 0,0.25842,-0.094056
             p4 = np.matrix([0, 0.025, -0.29, 1]).transpose()            
-        if leg_name == 'rf':
+        if leg_index == 0:
             p1x,p1y,p1z = 0.34,-0.05,-0.021
             p2x,p2y,p2z = 0,-0.076,-0.05
             p3x,p3y,p3z = 0,-0.25842,-0.094056
             p4 = np.matrix([0, -0.025, -0.29, 1]).transpose()
-        if leg_name == 'rm':
+        if leg_index == 2:
             p1x,p1y,p1z = 0,-0.05,-0.021
             p2x,p2y,p2z = 0,-0.076,-0.05
             p3x,p3y,p3z = 0,-0.25842,-0.094056
             p4 = np.matrix([0, -0.025, -0.29, 1]).transpose()
-        if leg_name == 'rb':
+        if leg_index == 4:
             p1x,p1y,p1z = -0.34,-0.05,-0.021
             p2x,p2y,p2z = 0,-0.076,-0.05
             p3x,p3y,p3z = 0,-0.25842,-0.094056
@@ -48,36 +53,41 @@ class Kinematic(object):
         position = (T * p4).transpose()[0,0:3].tolist()
         return position
 
-    def jacobian(self, theta, leg_name):
-        q1 = theta[0]
-        q2 = theta[1]
-        q3 = theta[2]
-        if leg_name == 'lf':
+    def jacobian(self, theta, leg_index):
+        if leg_index == 0 or leg_index == 2 or leg_index == 4:
+            q1 = theta[0]
+            q2 = theta[1] - 0.3
+            q3 = theta[2] + 0.42
+        if leg_index == 1 or leg_index == 3 or leg_index == 5:
+            q1 = theta[0]
+            q2 = theta[1] + 0.3
+            q3 = theta[2] - 0.42
+        if leg_index == 1:
             p1x,p1y,p1z = 0.34,0.05,-0.021
             p2x,p2y,p2z = 0,0.076,-0.05
             p3x,p3y,p3z = 0,0.25842,-0.094056
             p4x,p4y,p4z = 0,0.025,-0.29
-        if leg_name == 'lm':
+        if leg_index == 3:
             p1x,p1y,p1z = 0,0.05,-0.021
             p2x,p2y,p2z = 0,0.076,-0.05
             p3x,p3y,p3z = 0,0.25842,-0.094056
             p4x,p4y,p4z = 0,0.025,-0.29
-        if leg_name == 'lb':
+        if leg_index == 5:
             p1x,p1y,p1z = -0.34,0.05,-0.021
             p2x,p2y,p2z = 0,0.076,-0.05
             p3x,p3y,p3z = 0,0.25842,-0.094056
             p4x,p4y,p4z = 0,0.025,-0.29            
-        if leg_name == 'rf':
+        if leg_index == 0:
             p1x,p1y,p1z = 0.34,0.05,-0.021
             p2x,p2y,p2z = 0,-0.076,-0.05
             p3x,p3y,p3z = 0,-0.25842,-0.094056
             p4x,p4y,p4z = 0,-0.025,-0.29
-        if leg_name == 'rm':
+        if leg_index == 2:
             p1x,p1y,p1z = 0,0.05,-0.021
             p2x,p2y,p2z = 0,-0.076,-0.05
             p3x,p3y,p3z = 0,-0.25842,-0.094056
             p4x,p4y,p4z = 0,-0.025,-0.29
-        if leg_name == 'rb':
+        if leg_index == 4:
             p1x,p1y,p1z = -0.34,0.05,-0.021
             p2x,p2y,p2z = 0,-0.076,-0.05
             p3x,p3y,p3z = 0,-0.25842,-0.094056
@@ -90,31 +100,38 @@ class Kinematic(object):
                                     [1, 0, 0, 0]])
         return J
 
-    def ik(self, xd, leg_name):
+    def ik(self, xd, leg_index):
         alpha = 1 # step size
         error = 100
         ilimit = 1000
         count = 0
-        q1, q2, q3 = 0, 0, 0
+        if leg_index == 0 or leg_index == 2 or leg_index == 4:
+            q1 = 0
+            q2 = -0.3
+            q3 = 0.42
+        if leg_index == 1 or leg_index == 3 or leg_index == 5:
+            q1 = 0
+            q2 = 0.3
+            q3 = -0.42
         while error > 0.001:
-            x = self.fk([q1,q2,q3], leg_name)[0]
-            print(x)
-            J = self.jacobian([q1,q2,q3], leg_name)[0:3,:]
-            print(J)
+            x = self.fk([q1,q2,q3], leg_index)[0]
+            # print(x)
+            J = self.jacobian([q1,q2,q3], leg_index)[0:3,:]
+            # print(J)
             inv_J = np.linalg.pinv(J)
             dx = np.matrix([xd[i]-x[i] for i in range(3)])[0]
-            print(dx)
+            # print(dx)
             error = np.linalg.norm(dx)
-            print(error)
+            # print(error)
             dq = alpha * inv_J * dx.transpose()
-            print(dq)
+            # print(dq)
             q1 += dq[0,0]
             q2 += dq[1,0]
             q3 += dq[2,0]
             target_q = [q1,q2,q3]
-            print(target_q)
+            # print(target_q)
             count += 1
-            print(count)
+            # print(count)
             if count > ilimit:
                 print('Ik did not find solution')
                 target_q = [0,0,0]
@@ -122,17 +139,46 @@ class Kinematic(object):
         return target_q
 
 
+k = Kinematic()
+# print(k.fk([0.1,0,0], 0))
+# print(k.ik([0.3740209501807083, -0.3890747133925363, -0.3753941065956188], 0))
+# print(k.fk([-0.05,0,0], 1))
+# print(k.fk([0.05,0,0], 2))
+# print(k.fk([-0.05,0,0], 3))
+# print(k.fk([0.05,0,0], 4))
+# print(k.fk([-0.05,0,0], 5))
+
+# print(k.fk([0,0.05,0], 0))
+# print(k.fk([0,-0.05,0], 1))
+# print(k.fk([0,0.05,0], 2))
+# print(k.fk([0,-0.05,0], 3))
+# print(k.fk([0,0.05,0], 4))
+# print(k.fk([0,-0.05,0], 5))
+
+# print(k.fk([0,0,0.05], 0))
+# print(k.fk([0,0,-0.05], 1))
+# print(k.fk([0,0,0.05], 2))
+# print(k.fk([0,0,-0.05], 3))
+# print(k.fk([0,0,0.05], 4))
+# print(k.fk([0,0,-0.05], 5))
 # k = Kinematic()
-# print(k.fk([0,0,0], 'lf'))
-# qd = k.ik([0.34, 0.2, -.4], 'lf')
-# print(qd)
-# print(k.fk(qd, 'lf'))
+# print(k.fk([0,0,0], '1'))
+# qd = k.ik([0.34, 0.2, -.4], '1')
+# print(qd)l
+# print(k.fk(qd, '1'))
 
-# print(k.ik([0.34,0.2, -0.2], 'lf'))
-# theta = [.0]*3
-# J = k.jacobian(theta, 'rb')
+# print(k.ik([0.34,0.2, -0.2], '1'))
+theta = [.0] * 3
+vtheta = [0, 0, 1, 0]
+J = k.jacobian(theta, 2)
+# v = J * np.matrix(vtheta).transpose()
+# print(v)
+inv_J = np.linalg.pinv(J)
+v = np.matrix([[0], [0], [1], [0], [0], [0]])
+print(inv_J * v)
 # print(J * np.matrix([[0], [0], [np.pi], [0]]))
-
+# print(J.shape)
+print(J * np.matrix([[ 0.        ], [-3.63461494], [ 3.80311986], [0]]))
 # q1,q2,q3,q4 = symbols('q1 q2 q3 q4')
 # p1x, p1y, p1z = symbols('p1x p1y p1z')
 # p1 = Matrix([[p1x,p1y,p1z]])

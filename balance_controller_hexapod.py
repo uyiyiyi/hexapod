@@ -3,6 +3,7 @@ import pybullet as p
 import numpy as np
 from sympy import *
 import  sophus as sp
+from kinematic_model import *
 
 
 
@@ -22,7 +23,7 @@ def rot_z(theta):
     return R
 
 class BodyController(object):
-    def __init__(self) -> None:
+    def __init__(self, kinematic) -> None:
         self.cid = p.connect(p.GUI)#or p.DIRECT for non-graphical version
         p.setTimeStep(0.001)
         p.setGravity(0,0,-9.8)
@@ -43,7 +44,7 @@ class BodyController(object):
         # self.S = np.identity(6)
         p.stepSimulation()
 
-    def controller(self, kinematic):
+    def controller(self):
         self.pcd[0,0] = p.readUserDebugParameter(self.pcd_x_id, self.cid)
         self.pcd[1,0] = p.readUserDebugParameter(self.pcd_y_id, self.cid)
         self.pcd[2,0] = p.readUserDebugParameter(self.pcd_z_id, self.cid)
@@ -51,7 +52,7 @@ class BodyController(object):
         Ry = rot_y(p.readUserDebugParameter(self.rot_y_id, self.cid))
         Rz = rot_z(p.readUserDebugParameter(self.rot_z_id, self.cid))
         self.Rd = Rz * Ry * Rx
-        pc, qc = p.getBasePositionAndOrientation(self.body, self.cid)
+        pc, qc = p.getBasePositionAndOrientation(self.hexapod, self.cid)
         pc = np.matrix(pc).transpose()
         R = np.matrix(p.getMatrixFromQuaternion(qc)).reshape((3,3))
         self.pcd_dot = self.Kp * (self.pcd - pc)
@@ -120,11 +121,12 @@ class BodyController(object):
         return result
 
 # render = False
-sc = StanceController()
+km = Kinematic()
+sc = BodyController(km)
 while True:
     F = sc.controller()
-    if render == True:
-        renderForce(F)
+    # if render == True:
+    #     renderForce(F)
     sc.apply_force(F)
     # input()
 

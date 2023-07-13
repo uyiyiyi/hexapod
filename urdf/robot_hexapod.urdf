@@ -1,0 +1,1091 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="robot_hexapod">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="1.46108995875164E-06 0.051188804105788 -0.000137539896622166"
+        rpy="0 0 0" />
+      <mass
+        value="3.67349717771553" />
+      <inertia
+        ixx="0.173966458817694"
+        ixy="-3.03137671653759E-08"
+        ixz="2.33262035089775E-06"
+        iyy="0.185469512654219"
+        iyz="3.49228963968594E-06"
+        izz="0.0136702984773865" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="lb_link1">
+    <inertial>
+      <origin
+        xyz="0.038794 -0.021772 -0.0023024"
+        rpy="0 0 0" />
+      <mass
+        value="0.62516" />
+      <inertia
+        ixx="0.00043581"
+        ixy="2.4123E-05"
+        ixz="4.5244E-05"
+        iyy="0.00057762"
+        iyz="-1.333E-05"
+        izz="0.00053065" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/lb_link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/lb_link1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="body_lb"
+    type="revolute">
+    <origin
+      xyz="0.05 0.34 -0.021"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="lb_link1" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="lb_link2">
+    <inertial>
+      <origin
+        xyz="0.043848 0.01982 -0.0082235"
+        rpy="0 0 0" />
+      <mass
+        value="0.46795" />
+      <inertia
+        ixx="0.00041203"
+        ixy="1.5139E-05"
+        ixz="0.00048909"
+        iyy="0.0026296"
+        iyz="-2.926E-06"
+        izz="0.0023888" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/lb_link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/lb_link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="thigh_lb"
+    type="revolute">
+    <origin
+      xyz="0.075728 0.0068868 -0.05"
+      rpy="0 0 0" />
+    <parent
+      link="lb_link1" />
+    <child
+      link="lb_link2" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="lb_link_3">
+    <inertial>
+      <origin
+        xyz="0.0024767 -1.1784E-06 -0.17513"
+        rpy="0 0 0" />
+      <mass
+        value="0.13621" />
+      <inertia
+        ixx="0.00052953"
+        ixy="-1.4767E-09"
+        ixz="3.901E-05"
+        iyy="0.00053577"
+        iyz="1.6182E-08"
+        izz="2.4831E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/lb_link_3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/lb_link_3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="shank_lb"
+    type="revolute">
+    <origin
+      xyz="0.26531 -0.0068868 -0.073333"
+      rpy="0 0 0" />
+    <parent
+      link="lb_link2" />
+    <child
+      link="lb_link_3" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="lm_link1">
+    <inertial>
+      <origin
+        xyz="0.038794 -0.021772 -0.0023024"
+        rpy="0 0 0" />
+      <mass
+        value="0.62516" />
+      <inertia
+        ixx="0.00043581"
+        ixy="2.4123E-05"
+        ixz="4.5244E-05"
+        iyy="0.00057762"
+        iyz="-1.333E-05"
+        izz="0.00053065" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/lm_link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/lm_link1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="body_lm"
+    type="revolute">
+    <origin
+      xyz="0.05 0 -0.021"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="lm_link1" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="lm_link2">
+    <inertial>
+      <origin
+        xyz="0.043575 0.026707 -0.0082235"
+        rpy="0 0 0" />
+      <mass
+        value="0.46795" />
+      <inertia
+        ixx="0.00041203"
+        ixy="1.5139E-05"
+        ixz="0.00048909"
+        iyy="0.0026296"
+        iyz="-2.926E-06"
+        izz="0.0023888" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/lm_link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/lm_link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="thigh_lm"
+    type="revolute">
+    <origin
+      xyz="0.076 0 -0.05"
+      rpy="0 0 0" />
+    <parent
+      link="lm_link1" />
+    <child
+      link="lm_link2" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="lm_link3">
+    <inertial>
+      <origin
+        xyz="0.0024767 -1.1784E-06 -0.17513"
+        rpy="0 0 0" />
+      <mass
+        value="0.13621" />
+      <inertia
+        ixx="0.00052953"
+        ixy="-1.4767E-09"
+        ixz="3.901E-05"
+        iyy="0.00053577"
+        iyz="1.6182E-08"
+        izz="2.4831E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/lm_link3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/lm_link3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="shank_lm"
+    type="revolute">
+    <origin
+      xyz="0.26504 0 -0.073333"
+      rpy="0 0 0" />
+    <parent
+      link="lm_link2" />
+    <child
+      link="lm_link3" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="lf_link1">
+    <inertial>
+      <origin
+        xyz="0.038794 -0.021772 -0.0023024"
+        rpy="0 0 0" />
+      <mass
+        value="0.62516" />
+      <inertia
+        ixx="0.00043581"
+        ixy="2.4123E-05"
+        ixz="4.5244E-05"
+        iyy="0.00057762"
+        iyz="-1.333E-05"
+        izz="0.00053065" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/lf_link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/lf_link1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="body_lf"
+    type="revolute">
+    <origin
+      xyz="0.05 -0.34 -0.021"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="lf_link1" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="lf_link2">
+    <inertial>
+      <origin
+        xyz="0.043575 0.026707 -0.0082235"
+        rpy="0 0 0" />
+      <mass
+        value="0.46795" />
+      <inertia
+        ixx="0.00041203"
+        ixy="1.5139E-05"
+        ixz="0.00048909"
+        iyy="0.0026296"
+        iyz="-2.926E-06"
+        izz="0.0023888" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/lf_link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/lf_link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="thigh_lf"
+    type="revolute">
+    <origin
+      xyz="0.076 0 -0.05"
+      rpy="0 0 0" />
+    <parent
+      link="lf_link1" />
+    <child
+      link="lf_link2" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="lf_link3">
+    <inertial>
+      <origin
+        xyz="0.0024767 -1.1784E-06 -0.17513"
+        rpy="0 0 0" />
+      <mass
+        value="0.13621" />
+      <inertia
+        ixx="0.00052953"
+        ixy="-1.4767E-09"
+        ixz="3.901E-05"
+        iyy="0.00053577"
+        iyz="1.6182E-08"
+        izz="2.4831E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/lf_link3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/lf_link3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="shank_lf"
+    type="revolute">
+    <origin
+      xyz="0.26504 0 -0.073333"
+      rpy="0 0 0" />
+    <parent
+      link="lf_link2" />
+    <child
+      link="lf_link3" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="rf_link1">
+    <inertial>
+      <origin
+        xyz="-0.038794 -0.021772 -0.0023024"
+        rpy="0 0 0" />
+      <mass
+        value="0.62516" />
+      <inertia
+        ixx="0.00043581"
+        ixy="-2.4123E-05"
+        ixz="-4.5244E-05"
+        iyy="0.00057762"
+        iyz="-1.333E-05"
+        izz="0.00053065" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/rf_link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/rf_link1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="body_rf"
+    type="revolute">
+    <origin
+      xyz="-0.05 -0.34 -0.021"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="rf_link1" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="rf_link2">
+    <inertial>
+      <origin
+        xyz="-0.043271 0.026106 -0.0046951"
+        rpy="0 0 0" />
+      <mass
+        value="0.47536" />
+      <inertia
+        ixx="0.00035198"
+        ixy="-1.6418E-05"
+        ixz="-0.00032124"
+        iyy="0.0026453"
+        iyz="-1.9676E-06"
+        izz="0.0024651" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/rf_link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/rf_link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="thigh_rf"
+    type="revolute">
+    <origin
+      xyz="-0.076 0 -0.05"
+      rpy="0 0 0" />
+    <parent
+      link="rf_link1" />
+    <child
+      link="rf_link2" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="rf_link3">
+    <inertial>
+      <origin
+        xyz="-0.044776 1.1288E-06 -0.16933"
+        rpy="0 0 0" />
+      <mass
+        value="0.13622" />
+      <inertia
+        ixx="0.00048172"
+        ixy="-5.191E-09"
+        ixz="-0.00015293"
+        iyy="0.00053582"
+        iyz="-1.4937E-08"
+        izz="7.2694E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/rf_link3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/rf_link3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="shank_rf"
+    type="revolute">
+    <origin
+      xyz="-0.26977 0 -0.053373"
+      rpy="0 0 0" />
+    <parent
+      link="rf_link2" />
+    <child
+      link="rf_link3" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="rm_link1">
+    <inertial>
+      <origin
+        xyz="-0.038794 -0.021772 -0.0023024"
+        rpy="0 0 0" />
+      <mass
+        value="0.62516" />
+      <inertia
+        ixx="0.00043581"
+        ixy="-2.4123E-05"
+        ixz="-4.5244E-05"
+        iyy="0.00057762"
+        iyz="-1.333E-05"
+        izz="0.00053065" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/rm_link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/rm_link1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="body_rm"
+    type="revolute">
+    <origin
+      xyz="-0.05 0 -0.021"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="rm_link1" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="rm_link2">
+    <inertial>
+      <origin
+        xyz="-0.043271 0.026106 -0.0046951"
+        rpy="0 0 0" />
+      <mass
+        value="0.47536" />
+      <inertia
+        ixx="0.00035198"
+        ixy="-1.6418E-05"
+        ixz="-0.00032124"
+        iyy="0.0026453"
+        iyz="-1.9676E-06"
+        izz="0.0024651" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/rm_link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/rm_link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="thigh_rm"
+    type="revolute">
+    <origin
+      xyz="-0.076 0 -0.05"
+      rpy="0 0 0" />
+    <parent
+      link="rm_link1" />
+    <child
+      link="rm_link2" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="rm_link3">
+    <inertial>
+      <origin
+        xyz="-0.044776 1.1288E-06 -0.16933"
+        rpy="0 0 0" />
+      <mass
+        value="0.13622" />
+      <inertia
+        ixx="0.00048172"
+        ixy="-5.1909E-09"
+        ixz="-0.00015293"
+        iyy="0.00053582"
+        iyz="-1.4937E-08"
+        izz="7.2694E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/rm_link3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/rm_link3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="shank_rm"
+    type="revolute">
+    <origin
+      xyz="-0.26977 0 -0.053373"
+      rpy="0 0 0" />
+    <parent
+      link="rm_link2" />
+    <child
+      link="rm_link3" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="rb_link1">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0" />
+      <inertia
+        ixx="0"
+        ixy="0"
+        ixz="0"
+        iyy="0"
+        iyz="0"
+        izz="0" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/rb_link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/rb_link1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="body_rb"
+    type="revolute">
+    <origin
+      xyz="-0.05 0.34 -0.021"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="rb_link1" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="rb_link2">
+    <inertial>
+      <origin
+        xyz="-0.043271 0.026106 -0.0046951"
+        rpy="0 0 0" />
+      <mass
+        value="0.47536" />
+      <inertia
+        ixx="0.00035198"
+        ixy="-1.6418E-05"
+        ixz="-0.00032124"
+        iyy="0.0026453"
+        iyz="-1.9676E-06"
+        izz="0.0024651" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/rb_link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/rb_link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="thigh_rb"
+    type="revolute">
+    <origin
+      xyz="-0.076 0 -0.05"
+      rpy="0 0 0" />
+    <parent
+      link="rb_link1" />
+    <child
+      link="rb_link2" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="rb_link3">
+    <inertial>
+      <origin
+        xyz="-0.044776 1.1288E-06 -0.16933"
+        rpy="0 0 0" />
+      <mass
+        value="0.13622" />
+      <inertia
+        ixx="0.00048172"
+        ixy="-5.191E-09"
+        ixz="-0.00015293"
+        iyy="0.00053582"
+        iyz="-1.4937E-08"
+        izz="7.2694E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/rb_link3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_hexapod/meshes/rb_link3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="shank_rb"
+    type="revolute">
+    <origin
+      xyz="-0.26977 0 -0.053373"
+      rpy="0 0 0" />
+    <parent
+      link="rb_link2" />
+    <child
+      link="rb_link3" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+</robot>

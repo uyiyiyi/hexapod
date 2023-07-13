@@ -1,0 +1,1259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="robot_liuzu">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="1.4611E-06 0.00013754 0.051189"
+        rpy="0 0 0" />
+      <mass
+        value="17.206" />
+      <inertia
+        ixx="1.1941"
+        ixy="0.003952"
+        ixz="9.5899E-05"
+        iyy="1.1576"
+        iyz="0.078153"
+        izz="0.21746" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="lb_link1">
+    <inertial>
+      <origin
+        xyz="-0.038541 0.022331 -0.054879"
+        rpy="0 0 0" />
+      <mass
+        value="2.478" />
+      <inertia
+        ixx="0.017127"
+        ixy="-0.004201"
+        ixz="0.009585"
+        iyy="0.021963"
+        iyz="-0.0056509"
+        izz="0.011444" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/lb_link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/lb_link1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="body_lb"
+    type="revolute">
+    <origin
+      xyz="0.0499999999999999 0.34 -0.021"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="lb_link1" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="lb_link2">
+    <inertial>
+      <origin
+        xyz="0.033669 -0.033086 -0.002815"
+        rpy="0 0 0" />
+      <mass
+        value="1.658" />
+      <inertia
+        ixx="0.0034925"
+        ixy="-1.7485E-05"
+        ixz="-0.000732"
+        iyy="0.013323"
+        iyz="2.067E-06"
+        izz="0.015288" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/lb_link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/lb_link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="thigh_lb"
+    type="revolute">
+    <origin
+      xyz="0.075728 0.0068868 -0.05"
+      rpy="0 0 0" />
+    <parent
+      link="lb_link1" />
+    <child
+      link="lb_link2" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="lb_link_3">
+    <inertial>
+      <origin
+        xyz="-0.15658 0 -0.011782"
+        rpy="0 0 0" />
+      <mass
+        value="0.331" />
+      <inertia
+        ixx="0.00011902"
+        ixy="5E-09"
+        ixz="0.00064146"
+        iyy="0.011147"
+        iyz="1E-09"
+        izz="0.011069" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/lb_link_3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/lb_link_3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="shank_lb"
+    type="revolute">
+    <origin
+      xyz="0.25869 -0.0068868 -0.094056"
+      rpy="0 0 0" />
+    <parent
+      link="lb_link2" />
+    <child
+      link="lb_link_3" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="lm_link1">
+    <inertial>
+      <origin
+        xyz="-0.038541 0.022331 -0.054879"
+        rpy="0 0 0" />
+      <mass
+        value="2.478" />
+      <inertia
+        ixx="0.017127"
+        ixy="-0.004201"
+        ixz="0.009585"
+        iyy="0.021963"
+        iyz="-0.0056509"
+        izz="0.011444" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/lm_link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/lm_link1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="body_lm"
+    type="revolute">
+    <origin
+      xyz="0.0499999999999999 0 -0.021"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="lm_link1" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="lm_link2">
+    <inertial>
+      <origin
+        xyz="0.033669 -0.033086 -0.002815"
+        rpy="0 0 0" />
+      <mass
+        value="1.658" />
+      <inertia
+        ixx="0.0034925"
+        ixy="-1.7485E-05"
+        ixz="-0.000732"
+        iyy="0.013323"
+        iyz="2.067E-06"
+        izz="0.015288" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/lm_link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/lm_link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="thigh_lm"
+    type="revolute">
+    <origin
+      xyz="0.076 0 -0.05"
+      rpy="0 0 0" />
+    <parent
+      link="lm_link1" />
+    <child
+      link="lm_link2" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="lm_link3">
+    <inertial>
+      <origin
+        xyz="-0.15658 0 -0.011782"
+        rpy="0 0 0" />
+      <mass
+        value="0.331" />
+      <inertia
+        ixx="0.00011902"
+        ixy="5E-09"
+        ixz="0.00064146"
+        iyy="0.011147"
+        iyz="1E-09"
+        izz="0.011069" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/lm_link3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/lm_link3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="shank_lm"
+    type="revolute">
+    <origin
+      xyz="0.258415470716125 0 -0.094055539414559"
+      rpy="0 0 0" />
+    <parent
+      link="lm_link2" />
+    <child
+      link="lm_link3" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="lf_link1">
+    <inertial>
+      <origin
+        xyz="-0.038541 0.022331 -0.054879"
+        rpy="0 0 0" />
+      <mass
+        value="2.478" />
+      <inertia
+        ixx="0.017127"
+        ixy="-0.004201"
+        ixz="0.009585"
+        iyy="0.021963"
+        iyz="-0.0056509"
+        izz="0.011444" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/lf_link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/lf_link1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="body_lf"
+    type="revolute">
+    <origin
+      xyz="0.05 -0.34 -0.021"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="lf_link1" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="lf_link2">
+    <inertial>
+      <origin
+        xyz="0.033669 -0.033086 -0.002815"
+        rpy="0 0 0" />
+      <mass
+        value="1.658" />
+      <inertia
+        ixx="0.0034925"
+        ixy="-1.7485E-05"
+        ixz="-0.000732"
+        iyy="0.013323"
+        iyz="2.067E-06"
+        izz="0.015288" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/lf_link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/lf_link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="thigh_lf"
+    type="revolute">
+    <origin
+      xyz="0.076 0 -0.05"
+      rpy="0 0 0" />
+    <parent
+      link="lf_link1" />
+    <child
+      link="lf_link2" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="lf_link3">
+    <inertial>
+      <origin
+        xyz="-0.15658 0 -0.011782"
+        rpy="0 0 0" />
+      <mass
+        value="0.331" />
+      <inertia
+        ixx="0.00011902"
+        ixy="5E-09"
+        ixz="0.00064146"
+        iyy="0.011147"
+        iyz="1E-09"
+        izz="0.011069" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/lf_link3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/lf_link3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="shank_lf"
+    type="revolute">
+    <origin
+      xyz="0.258415470716125 0 -0.094055539414559"
+      rpy="0 0 0" />
+    <parent
+      link="lf_link2" />
+    <child
+      link="lf_link3" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="rf_link1">
+    <inertial>
+      <origin
+        xyz="0.022331 -0.038541 -0.054879"
+        rpy="0 0 0" />
+      <mass
+        value="2.478" />
+      <inertia
+        ixx="0.021963"
+        ixy="-0.0042012"
+        ixz="-0.005651"
+        iyy="0.017127"
+        iyz="0.009585"
+        izz="0.011444" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/rf_link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/rf_link1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="body_rf"
+    type="revolute">
+    <origin
+      xyz="-0.05 -0.34 -0.021"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="rf_link1" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="rf_link2">
+    <inertial>
+      <origin
+        xyz="0.033159 0.0029006 -0.019475"
+        rpy="0 0 0" />
+      <mass
+        value="1.658" />
+      <inertia
+        ixx="0.0025821"
+        ixy="0.0007783"
+        ixz="-0.0027886"
+        iyy="0.014124"
+        iyz="0.00024407"
+        izz="0.013116" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/rf_link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/rf_link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="thigh_rf"
+    type="revolute">
+    <origin
+      xyz="-0.076 0 -0.05"
+      rpy="0 0 0" />
+    <parent
+      link="rf_link1" />
+    <child
+      link="rf_link2" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="rf_link3">
+    <inertial>
+      <origin
+        xyz="-0.15658 0 -0.011782"
+        rpy="0 0 0" />
+      <mass
+        value="0.331" />
+      <inertia
+        ixx="0.00011902"
+        ixy="5E-09"
+        ixz="0.00064146"
+        iyy="0.011147"
+        iyz="1E-09"
+        izz="0.011069" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/rf_link3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/rf_link3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="shank_rf"
+    type="revolute">
+    <origin
+      xyz="-0.258415470716125 0 -0.0940555394145592"
+      rpy="0 0 0" />
+    <parent
+      link="rf_link2" />
+    <child
+      link="rf_link3" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="rm_link1">
+    <inertial>
+      <origin
+        xyz="0.022331 -0.038541 -0.054879"
+        rpy="0 0 0" />
+      <mass
+        value="2.478" />
+      <inertia
+        ixx="0.021963"
+        ixy="-0.0042012"
+        ixz="-0.005651"
+        iyy="0.017127"
+        iyz="0.009585"
+        izz="0.011444" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/rm_link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/rm_link1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="body_rm"
+    type="revolute">
+    <origin
+      xyz="-0.05 0 -0.021"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="rm_link1" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="rm_link2">
+    <inertial>
+      <origin
+        xyz="0.033159 0.0029006 -0.019475"
+        rpy="0 0 0" />
+      <mass
+        value="1.658" />
+      <inertia
+        ixx="0.0025821"
+        ixy="0.0007783"
+        ixz="-0.0027886"
+        iyy="0.014124"
+        iyz="0.00024407"
+        izz="0.013116" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/rm_link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/rm_link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="thigh_rm"
+    type="revolute">
+    <origin
+      xyz="-0.076 0 -0.05"
+      rpy="0 0 0" />
+    <parent
+      link="rm_link1" />
+    <child
+      link="rm_link2" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="rm_link3">
+    <inertial>
+      <origin
+        xyz="-0.15658 0 -0.011782"
+        rpy="0 0 0" />
+      <mass
+        value="0.331" />
+      <inertia
+        ixx="0.00011902"
+        ixy="5E-09"
+        ixz="0.00064146"
+        iyy="0.011147"
+        iyz="1E-09"
+        izz="0.011069" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/rm_link3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/rm_link3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="shank_rm"
+    type="revolute">
+    <origin
+      xyz="-0.258415470716125 0 -0.094055539414557"
+      rpy="0 0 0" />
+    <parent
+      link="rm_link2" />
+    <child
+      link="rm_link3" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="rb_link1">
+    <inertial>
+      <origin
+        xyz="0.022331 -0.038541 -0.054879"
+        rpy="0 0 0" />
+      <mass
+        value="2.478" />
+      <inertia
+        ixx="0.021963"
+        ixy="-0.0042012"
+        ixz="-0.005651"
+        iyy="0.017127"
+        iyz="0.009585"
+        izz="0.011444" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/rb_link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/rb_link1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="body_rb"
+    type="revolute">
+    <origin
+      xyz="-0.05 0.34 -0.021"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="rb_link1" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="rb_link2">
+    <inertial>
+      <origin
+        xyz="0.033159 0.0029006 -0.019475"
+        rpy="0 0 0" />
+      <mass
+        value="1.658" />
+      <inertia
+        ixx="0.0025821"
+        ixy="0.0007783"
+        ixz="-0.0027886"
+        iyy="0.014124"
+        iyz="0.00024407"
+        izz="0.013116" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/rb_link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/rb_link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="thigh_rb"
+    type="revolute">
+    <origin
+      xyz="-0.076 0 -0.05"
+      rpy="0 0 0" />
+    <parent
+      link="rb_link1" />
+    <child
+      link="rb_link2" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="rb_link3">
+    <inertial>
+      <origin
+        xyz="-0.15658 0 -0.011782"
+        rpy="0 0 0" />
+      <mass
+        value="0.331" />
+      <inertia
+        ixx="0.00011902"
+        ixy="5E-09"
+        ixz="0.00064146"
+        iyy="0.011147"
+        iyz="1E-09"
+        izz="0.011069" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/rb_link3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_liuzu/meshes/rb_link3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="shank_rb"
+    type="revolute">
+    <origin
+      xyz="-0.258415470716125 0 -0.0940555394145591"
+      rpy="0 0 0" />
+    <parent
+      link="rb_link2" />
+    <child
+      link="rb_link3" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+
+  <joint name="ray_joint" type="fixed">
+    <origin xyz="0 -0.43 0.02" rpy="1.5708 0 0"/>
+    <parent link="base_link"/>
+    <child link="lidar"/>  
+  </joint>
+
+  <link name="lidar">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="1E-09" />
+      <inertia ixx="1E-09" ixy="1E-09" ixz="1E-09" iyy="1E-09" iyz="1E-09" izz="1E-09" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder radius="0.02" length="0.02"/>
+      </geometry>
+      <material name="Cyan">
+        <color rgba="0 0 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder radius="0.02" length="0.02"/>
+      </geometry>
+    </collision>
+  </link>
+
+
+  <!-- <joint name="lf_tip_joint" type="fixed">
+    <origin xyz="0.025 0 -0.29" rpy="0 0 0"/>
+    <parent link="lf_link3"/>
+    <child link="lf_foot_tip"/>  
+  </joint>
+
+  <link name="lf_foot_tip">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="1E-09" />
+      <inertia ixx="1E-09" ixy="1E-09" ixz="1E-09" iyy="1E-09" iyz="1E-09" izz="1E-09" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.01"/>
+      </geometry>
+      <material name="Cyan">
+        <color rgba="0 0 1 1" />
+      </material>
+    </visual>
+  </link>
+
+  <joint name="lm_tip_joint" type="fixed">
+    <origin xyz="0.025 0 -0.29" rpy="0 0 0"/>
+    <parent link="lm_link3"/>
+    <child link="lm_foot_tip"/>  
+  </joint>
+
+  <link name="lm_foot_tip">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="1E-09" />
+      <inertia ixx="1E-09" ixy="1E-09" ixz="1E-09" iyy="1E-09" iyz="1E-09" izz="1E-09" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.01"/>
+      </geometry>
+      <material name="Cyan">
+        <color rgba="0 0 1 1" />
+      </material>
+    </visual>
+  </link>
+
+  <joint name="lb_tip_joint" type="fixed">
+    <origin xyz="0.025 0 -0.29" rpy="0 0 0"/>
+    <parent link="lb_link_3"/>
+    <child link="lb_foot_tip"/>  
+  </joint>
+
+  <link name="lb_foot_tip">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="1E-09" />
+      <inertia ixx="1E-09" ixy="1E-09" ixz="1E-09" iyy="1E-09" iyz="1E-09" izz="1E-09" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.01"/>
+      </geometry>
+      <material name="Cyan">
+        <color rgba="0 0 1 1" />
+      </material>
+    </visual>
+  </link>
+
+  <joint name="rf_tip_joint" type="fixed">
+    <origin xyz="-0.025 0 -0.29" rpy="0 0 0"/>
+    <parent link="rf_link3"/>
+    <child link="rf_foot_tip"/>  
+  </joint>
+
+  <link name="rf_foot_tip">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="1E-09" />
+      <inertia ixx="1E-09" ixy="1E-09" ixz="1E-09" iyy="1E-09" iyz="1E-09" izz="1E-09" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.01"/>
+      </geometry>
+      <material name="Cyan">
+        <color rgba="0 0 1 1" />
+      </material>
+    </visual>
+  </link>
+
+    <joint name="rm_tip_joint" type="fixed">
+    <origin xyz="-0.025 0 -0.29" rpy="0 0 0"/>
+    <parent link="rm_link3"/>
+    <child link="rm_foot_tip"/>  
+  </joint>
+
+  <link name="rm_foot_tip">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="1E-09" />
+      <inertia ixx="1E-09" ixy="1E-09" ixz="1E-09" iyy="1E-09" iyz="1E-09" izz="1E-09" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.01"/>
+      </geometry>
+      <material name="Cyan">
+        <color rgba="0 0 1 1" />
+      </material>
+    </visual>
+  </link>
+
+    <joint name="rb_tip_joint" type="fixed">
+    <origin xyz="-0.025 0 -0.29" rpy="0 0 0"/>
+    <parent link="rb_link3"/>
+    <child link="rb_foot_tip"/>  
+  </joint>
+
+  <link name="rb_foot_tip">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="1E-09" />
+      <inertia ixx="1E-09" ixy="1E-09" ixz="1E-09" iyy="1E-09" iyz="1E-09" izz="1E-09" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.01"/>
+      </geometry>
+      <material name="Cyan">
+        <color rgba="0 0 1 1" />
+      </material>
+    </visual>
+  </link> -->
+</robot>

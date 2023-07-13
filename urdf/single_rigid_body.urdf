@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<robot name="body">
+  <link name="body_base_link">
+    <contact>
+      <lateral_friction value="1.0"/>
+      <spinning_friction value=".001"/>
+      <friction_anchor/>
+    </contact>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="45"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <box size="0.6 0.256 0.2"/>
+      </geometry>
+      <material name="blockmat">
+        <color rgba="0.8 1 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <box size="0.6 0.256 0.2"/>
+      </geometry>
+    </collision>
+  </link>
+</robot>
