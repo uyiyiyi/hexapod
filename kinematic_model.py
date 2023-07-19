@@ -92,12 +92,19 @@ class Kinematic(object):
             p2x,p2y,p2z = 0,-0.076,-0.05
             p3x,p3y,p3z = 0,-0.25842,-0.094056
             p4x,p4y,p4z = 0,-0.025,-0.29   
+        # J = np.matrix([[-p2x*np.sin(q1) - p2y*np.cos(q1) - p3x*np.sin(q1) - p3y*np.cos(q1)*np.cos(q2) + p3z*np.sin(q2)*np.cos(q1) - p4x*np.sin(q1) + p4y*(np.sin(q2)*np.sin(q3)*np.cos(q1) - np.cos(q1)*np.cos(q2)*np.cos(q3)) + p4z*(np.sin(q2)*np.cos(q1)*np.cos(q3) + np.sin(q3)*np.cos(q1)*np.cos(q2)), p3y*np.sin(q1)*np.sin(q2) + p3z*np.sin(q1)*np.cos(q2) + p4y*(np.sin(q1)*np.sin(q2)*np.cos(q3) + np.sin(q1)*np.sin(q3)*np.cos(q2)) + p4z*(-np.sin(q1)*np.sin(q2)*np.sin(q3) + np.sin(q1)*np.cos(q2)*np.cos(q3)), p4y*(np.sin(q1)*np.sin(q2)*np.cos(q3) + np.sin(q1)*np.sin(q3)*np.cos(q2)) + p4z*(-np.sin(q1)*np.sin(q2)*np.sin(q3) + np.sin(q1)*np.cos(q2)*np.cos(q3)), 0], 
+        #                             [p2x*np.cos(q1) - p2y*np.sin(q1) + p3x*np.cos(q1) - p3y*np.sin(q1)*np.cos(q2) + p3z*np.sin(q1)*np.sin(q2) + p4x*np.cos(q1) + p4y*(np.sin(q1)*np.sin(q2)*np.sin(q3) - np.sin(q1)*np.cos(q2)*np.cos(q3)) + p4z*(np.sin(q1)*np.sin(q2)*np.cos(q3) + np.sin(q1)*np.sin(q3)*np.cos(q2)), -p3y*np.sin(q2)*np.cos(q1) - p3z*np.cos(q1)*np.cos(q2) + p4y*(-np.sin(q2)*np.cos(q1)*np.cos(q3) - np.sin(q3)*np.cos(q1)*np.cos(q2)) + p4z*(np.sin(q2)*np.sin(q3)*np.cos(q1) - np.cos(q1)*np.cos(q2)*np.cos(q3)), p4y*(-np.sin(q2)*np.cos(q1)*np.cos(q3) - np.sin(q3)*np.cos(q1)*np.cos(q2)) + p4z*(np.sin(q2)*np.sin(q3)*np.cos(q1) - np.cos(q1)*np.cos(q2)*np.cos(q3)), 0], 
+        #                             [0, p3y*np.cos(q2) - p3z*np.sin(q2) + p4y*(-np.sin(q2)*np.sin(q3) + np.cos(q2)*np.cos(q3)) + p4z*(-np.sin(q2)*np.cos(q3) - np.sin(q3)*np.cos(q2)), p4y*(-np.sin(q2)*np.sin(q3) + np.cos(q2)*np.cos(q3)) + p4z*(-np.sin(q2)*np.cos(q3) - np.sin(q3)*np.cos(q2)), 0], 
+        #                             [0, np.cos(q1), np.cos(q1), np.cos(q1)], 
+        #                             [0, np.sin(q1), np.sin(q1), np.sin(q1)], 
+        #                             [1, 0, 0, 0]])
         J = np.matrix([[-p2x*np.sin(q1) - p2y*np.cos(q1) - p3x*np.sin(q1) - p3y*np.cos(q1)*np.cos(q2) + p3z*np.sin(q2)*np.cos(q1) - p4x*np.sin(q1) + p4y*(np.sin(q2)*np.sin(q3)*np.cos(q1) - np.cos(q1)*np.cos(q2)*np.cos(q3)) + p4z*(np.sin(q2)*np.cos(q1)*np.cos(q3) + np.sin(q3)*np.cos(q1)*np.cos(q2)), p3y*np.sin(q1)*np.sin(q2) + p3z*np.sin(q1)*np.cos(q2) + p4y*(np.sin(q1)*np.sin(q2)*np.cos(q3) + np.sin(q1)*np.sin(q3)*np.cos(q2)) + p4z*(-np.sin(q1)*np.sin(q2)*np.sin(q3) + np.sin(q1)*np.cos(q2)*np.cos(q3)), p4y*(np.sin(q1)*np.sin(q2)*np.cos(q3) + np.sin(q1)*np.sin(q3)*np.cos(q2)) + p4z*(-np.sin(q1)*np.sin(q2)*np.sin(q3) + np.sin(q1)*np.cos(q2)*np.cos(q3)), 0], 
                                     [p2x*np.cos(q1) - p2y*np.sin(q1) + p3x*np.cos(q1) - p3y*np.sin(q1)*np.cos(q2) + p3z*np.sin(q1)*np.sin(q2) + p4x*np.cos(q1) + p4y*(np.sin(q1)*np.sin(q2)*np.sin(q3) - np.sin(q1)*np.cos(q2)*np.cos(q3)) + p4z*(np.sin(q1)*np.sin(q2)*np.cos(q3) + np.sin(q1)*np.sin(q3)*np.cos(q2)), -p3y*np.sin(q2)*np.cos(q1) - p3z*np.cos(q1)*np.cos(q2) + p4y*(-np.sin(q2)*np.cos(q1)*np.cos(q3) - np.sin(q3)*np.cos(q1)*np.cos(q2)) + p4z*(np.sin(q2)*np.sin(q3)*np.cos(q1) - np.cos(q1)*np.cos(q2)*np.cos(q3)), p4y*(-np.sin(q2)*np.cos(q1)*np.cos(q3) - np.sin(q3)*np.cos(q1)*np.cos(q2)) + p4z*(np.sin(q2)*np.sin(q3)*np.cos(q1) - np.cos(q1)*np.cos(q2)*np.cos(q3)), 0], 
                                     [0, p3y*np.cos(q2) - p3z*np.sin(q2) + p4y*(-np.sin(q2)*np.sin(q3) + np.cos(q2)*np.cos(q3)) + p4z*(-np.sin(q2)*np.cos(q3) - np.sin(q3)*np.cos(q2)), p4y*(-np.sin(q2)*np.sin(q3) + np.cos(q2)*np.cos(q3)) + p4z*(-np.sin(q2)*np.cos(q3) - np.sin(q3)*np.cos(q2)), 0], 
-                                    [0, np.cos(q1), np.cos(q1), np.cos(q1)], 
-                                    [0, np.sin(q1), np.sin(q1), np.sin(q1)], 
+                                    [0, np.cos(q1), np.cos(q1), 0], 
+                                    [0, np.sin(q1), np.sin(q1), 0], 
                                     [1, 0, 0, 0]])
+                                    
         return J
 
     def ik(self, xd, leg_index):
@@ -179,57 +186,59 @@ print(inv_J * v)
 # print(J * np.matrix([[0], [0], [np.pi], [0]]))
 # print(J.shape)
 print(J * np.matrix([[ 0.        ], [-3.63461494], [ 3.80311986], [0]]))
-# q1,q2,q3,q4 = symbols('q1 q2 q3 q4')
-# p1x, p1y, p1z = symbols('p1x p1y p1z')
-# p1 = Matrix([[p1x,p1y,p1z]])
-# T1 = Matrix([[cos(q1), -1*sin(q1), 0, 0], 
-#                         [sin(q1), cos(q1), 0, 0], 
-#                         [0, 0, 1, 0],
-#                         [0, 0, 0, 1]])
-# T1[0:3,3] = p1.transpose()
 
-# p2x, p2y, p2z = symbols('p2x p2y p2z')
-# p2 = Matrix([[p2x,p2y,p2z]])
-# T2 = Matrix([[1, 0, 0, 0], 
-#                         [0, cos(q2), -1*sin(q2), 0], 
-#                         [0, sin(q2), cos(q2), 0],
-#                         [0, 0, 0, 1]])
-# T2[0:3,3] = p2.transpose()
 
-# p3x, p3y, p3z = symbols('p3x p3y p3z')
-# p3 = Matrix([[p3x,p3y,p3z]])
-# T3 = Matrix([[1, 0, 0, 0], 
-#                         [0, cos(q3), -1*sin(q3), 0], 
-#                         [0, sin(q3), cos(q3), 0],
-#                         [0, 0, 0, 1]])
-# T3[0:3,3] = p3.transpose()
+q1,q2,q3,q4 = symbols('q1 q2 q3 q4')
+p1x, p1y, p1z = symbols('p1x p1y p1z')
+p1 = Matrix([[p1x,p1y,p1z]])
+T1 = Matrix([[cos(q1), -1*sin(q1), 0, 0], 
+            [sin(q1), cos(q1), 0, 0], 
+            [0, 0, 1, 0],
+            [0, 0, 0, 1]])
+T1[0:3,3] = p1.transpose()
 
-# p4x, p4y, p4z = symbols('p4x p4y p4z')
-# T4 = Matrix([[1, 0, 0, 0],
-#                         [0, 1, 0, 0 ],
-#                         [0, 0, 1, 0],
-#                         [0, 0, 0, 1]])
-# p4 = Matrix([[p4x, p4y, p4z]])
-# T4[0:3,3] = p4.transpose()
-# T = T1 * T2 * T3 * T4
+p2x, p2y, p2z = symbols('p2x p2y p2z')
+p2 = Matrix([[p2x,p2y,p2z]])
+T2 = Matrix([[1, 0, 0, 0], 
+            [0, cos(q2), -1*sin(q2), 0], 
+            [0, sin(q2), cos(q2), 0],
+            [0, 0, 0, 1]])
+T2[0:3,3] = p2.transpose()
 
-# # tip = T * p4.transpose()
+p3x, p3y, p3z = symbols('p3x p3y p3z')
+p3 = Matrix([[p3x,p3y,p3z]])
+T3 = Matrix([[1, 0, 0, 0], 
+            [0, cos(q3), -1*sin(q3), 0], 
+            [0, sin(q3), cos(q3), 0],
+            [0, 0, 0, 1]])
+T3[0:3,3] = p3.transpose()
 
-# J = Matrix([[diff(T[0,3], q1), diff(T[0,3], q2), diff(T[0,3], q3), diff(T[0,3], q4)], 
-#                         [diff(T[1,3], q1), diff(T[1,3], q2), diff(T[1,3], q3), diff(T[1,3], q4)],
-#                         [diff(T[2,3], q1), diff(T[2,3], q2), diff(T[2,3], q3), diff(T[2,3], q4)],
-#                         [0,0,0,0],
-#                         [0,0,0,0],
-#                         [0,0,0,0]])
+p4x, p4y, p4z = symbols('p4x p4y p4z')
+T4 = Matrix([[1, 0, 0, 0],
+            [0, 1, 0, 0 ],
+            [0, 0, 1, 0],
+            [0, 0, 0, 1]])
+p4 = Matrix([[p4x, p4y, p4z]])
+T4[0:3,3] = p4.transpose()
+T = T1 * T2 * T3 * T4
 
-# wb1 = T1[0:3,0:3] * Matrix([[0,0,1]]).transpose()
-# wb2 = T1[0:3,0:3] * T2[0:3,0:3] * Matrix([[1,0,0]]).transpose()
-# wb3 = T1[0:3,0:3] * T2[0:3,0:3] * T3[0:3,0:3] * Matrix([[1,0,0]]).transpose()
+# tip = T * p4.transpose()
+
+J = Matrix([[diff(T[0,3], q1), diff(T[0,3], q2), diff(T[0,3], q3), diff(T[0,3], q4)], 
+            [diff(T[1,3], q1), diff(T[1,3], q2), diff(T[1,3], q3), diff(T[1,3], q4)],
+            [diff(T[2,3], q1), diff(T[2,3], q2), diff(T[2,3], q3), diff(T[2,3], q4)],
+            [0,0,0,0],
+            [0,0,0,0],
+            [0,0,0,0]])
+
+wb1 = T1[0:3,0:3] * Matrix([[0,0,1]]).transpose()
+wb2 = T1[0:3,0:3] * T2[0:3,0:3] * Matrix([[1,0,0]]).transpose()
+wb3 = T1[0:3,0:3] * T2[0:3,0:3] * T3[0:3,0:3] * Matrix([[1,0,0]]).transpose()
 # wb4 = T1[0:3,0:3] * T2[0:3,0:3] * T3[0:3,0:3] * T4[0:3,0:3] * Matrix([[1,0,0]]).transpose()
 
-# J[3:6,0] =wb1
-# J[3:6,1] =wb2
-# J[3:6,2] =wb3
+J[3:6,0] =wb1
+J[3:6,1] =wb2
+J[3:6,2] =wb3
 # J[3:6,3] =wb4
 
-# print(J)
+print(J)
