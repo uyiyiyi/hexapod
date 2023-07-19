@@ -2,11 +2,10 @@
 import pybullet as p
 import pybullet_data
 import numpy as np
-import open3d as o3d
 import os
 import time
 import math
-from kinematic_model import *
+from kinematic_model import Kinematic
 import  sophus as sp
 import threading
 
@@ -63,11 +62,13 @@ class Hexapod(object):
         self.wz = 0
         self.pcd = np.array([[0,0,0.3754]]).transpose()
         self.Rd =  np.identity(3)
-        self.stride = 0.1
+        self.stride = 0.05
         self.alpha = 0
         self.height_d = 0.3754
-        self.Kp = np.diag([80, 50, 120]) # [[1., 0., 0.], [0., 10., 0.], [0., 0., 10.]]
-        self.Kw = np.diag([80, 80, 80])
+        self.kpp = np.diag([100, 200, 150]) # [[1., 0., 0.], [0., 10., 0.], [0., 0., 10.]]
+        self.Kpd = np.diag([80, 50, 100])
+        self.kwp = np.diag([50, 50, 40])
+        self.kwd = np.diag([60, 60, 60])
 
     def gait(self):
         # p.stepSimulation()
@@ -75,7 +76,7 @@ class Hexapod(object):
         self.wz = p.readUserDebugParameter(self.w_debugId, self.physicsClient)
         Rx = rot_x(p.readUserDebugParameter(self.rot_x_id, self.physicsClient))
         Ry = rot_y(p.readUserDebugParameter(self.rot_y_id, self.physicsClient))
-        Rz = rot_z(p.readUserDebugParameter(self.rot_z_id, self.physicsClient))
+        Rz = rot_z(self.wz)
         self.height_d = p.readUserDebugParameter(self.body_height_id, self.physicsClient)
         self.T = self.stride / self.vx
         self.alpha = self.wz * self.T
@@ -138,44 +139,57 @@ class Hexapod(object):
             back_thigh_joint_pos = back_joint_positions[1] - back_joint_positions[1] / lower_steps * (i + 1)
             back_shank_joint_pos = back_joint_positions[2] - back_joint_positions[2] / lower_steps * (i + 1)
             swing_joint_positions_ = [front_body_joint_pos, front_thigh_joint_pos, front_shank_joint_pos, mid_body_joint_pos, mid_thigh_joint_pos, mid_shank_joint_pos, back_body_joint_pos, back_thigh_joint_pos, back_shank_joint_pos]
-            p.setJointMotorControlArray(self.hexapod, swing_jointIDs, p.POSITION_CONTROL, swing_joint_positions_, forces=[100]*9)
+            p.setJointMotorControlArray(self.hexapod, swing_jointIDs, p.POSITION_CONTROL, swing_joint_positions_, forces=[200]*9)
             p.stepSimulation()
-            time.sleep(0.05)
+            time.sleep(0.01)
 
     def stance_controller(self):
-        self.stanceLegID = [i for i, x in enumerate(self.cycle_leg_number_) if x == 1]
-        for i in range(18):
-            self.joint_positions[i] = p.getJointState(self.hexapod, self.joint_indices[i], self.physicsClient)[0]
-        front_stance_legID = self.stanceLegID[0]
-        mid_stance_legID = self.stanceLegID[1]
-        back_stance_legID = self.stanceLegID[2]
-        front_joint_positions = self.joint_positions[(3 * front_stance_legID): (3 * front_stance_legID + 3)]
-        mid_joint_positions = self.joint_positions[(3 * mid_stance_legID): (3 * mid_stance_legID + 3)]
-        back_joint_positions = self.joint_positions[(3 * back_stance_legID): (3 * back_stance_legID + 3)]
-        front_tip = self.k.fk(front_joint_positions, front_stance_legID)
-        mid_tip = self.k.fk(mid_joint_positions, mid_stance_legID)
-        back_tip = self.k.fk(back_joint_positions, back_stance_legID)
-        pc0 = [0, 0, -(front_tip[0][2] + mid_tip[0][2] + back_tip[0][2]) / 3]
-        pc0 = np.matrix(pc0).transpose()
-        qc = p.getBasePositionAndOrientation(self.hexapod, self.physicsClient)[1]
-        Rot = np.matrix(p.getMatrixFromQuaternion(qc)).reshape((3,3)) * rot_z(-np.pi / 2)
-        pos_error = self.pcd - pc0
-        pos_error_norm = np.linalg.norm(pos_error)
-        pcd_dot = self.Kp * (pos_error)
-        R_so3 = np.matrix(sp.SO3(self.Rd * Rot.transpose()).log()).transpose()
-        R_so3_error_norm = np.linalg.norm(R_so3)
-        wbd = self.Kw * R_so3
-        # print("pcd", self.pcd)
-        # print("pc", pc)
-        # print("pos_error", pos_error)
-        # print("pos_error_norm", pos_error_norm)
-        # print("R_so3", R_so3)
-        # print("R_so3_norm", R_so3_error_norm)
-        r1 = np.matrix(front_tip)
-        r1_0 = r1
-        r2 = np.matrix(mid_tip)
-        r3 = np.matrix(back_tip)
+        pos_error_norm = 1
+        R_so3_error_norm = 1
         while pos_error_norm > 0.04 or R_so3_error_norm > 0.1:
+            # 计算支撑腿序号
+            self.stanceLegID = [i for i, x in enumerate(self.cycle_leg_number_) if x == 1]
+            front_stance_legID = self.stanceLegID[0]
+            mid_stance_legID = self.stanceLegID[1]
+            back_stance_legID = self.stanceLegID[2]
+            # 获取所有关节位置
+            for i in range(18):
+                self.joint_positions[i] = p.getJointState(self.hexapod, self.joint_indices[i], self.physicsClient)[0]            
+            # 计算支撑腿的关节角位置
+            front_joint_positions = self.joint_positions[(3 * front_stance_legID): (3 * front_stance_legID + 3)]
+            mid_joint_positions = self.joint_positions[(3 * mid_stance_legID): (3 * mid_stance_legID + 3)]
+            back_joint_positions = self.joint_positions[(3 * back_stance_legID): (3 * back_stance_legID + 3)]
+            # 计算支撑相足端位置
+            front_tip = self.k.fk(front_joint_positions, front_stance_legID)
+            mid_tip = self.k.fk(mid_joint_positions, mid_stance_legID)
+            back_tip = self.k.fk(back_joint_positions, back_stance_legID)
+            # 记初始位置为pc0，即[0 ,0 , 机身高度]
+            pc0 = [0, 0, -(front_tip[0][2] + mid_tip[0][2] + back_tip[0][2]) / 3]
+            # 计算机器人当前位置坐标，可由
+
+            
+            pc0 = np.matrix(pc0).transpose()
+            qc = p.getBasePositionAndOrientation(self.hexapod, self.physicsClient)[1]
+            Rot = np.matrix(p.getMatrixFromQuaternion(qc)).reshape((3,3)) * rot_z(-np.pi / 2)
+            pos_error = self.pcd - pc0
+            pos_error_norm = np.linalg.norm(pos_error)
+            pcd_dot = self.kpp * (pos_error)
+            R_so3 = np.matrix(sp.SO3(self.Rd * Rot.transpose()).log()).transpose()
+            R_so3_error_norm = np.linalg.norm(R_so3)
+            _, w = p.getBaseVelocity(self.hexapod, self.physicsClient)
+            wbd = self.kwp * R_so3 + self.kwd * (np.matrix([[0], [0], [0]] - np.matrix(w).transpose()))
+            print("wbd", wbd)
+            # print("pcd", self.pcd)
+            # print("pc", pc)
+            # print("pos_error", pos_error)
+            # print("pos_error_norm", pos_error_norm)
+            # print("R_so3", R_so3)
+            # print("R_so3_norm", R_so3_error_norm)
+            r1 = np.matrix(front_tip)
+            r1_0 = r1
+            r2 = np.matrix(mid_tip)
+            r3 = np.matrix(back_tip)
+
             v_front_tip = -pcd_dot.transpose() + np.cross(wbd.transpose(), -r1)
             w_front_tip = -wbd.transpose()
             # w_front_tip = wbd.transpose() + np.cross(pcd_dot.transpose(), r1) / np.linalg.norm(r1)**2
@@ -208,12 +222,12 @@ class Hexapod(object):
             mid_jacobian_inverse = np.linalg.pinv(mid_jacobian)
             back_jacobian_inverse = np.linalg.pinv(back_jacobian)
             # 计算关节速度
-            front_v_theta = (front_jacobian_inverse[0:4, 0:3] * v_front_tip.transpose()).transpose()[0, 0:3]
-            mid_v_theta = (mid_jacobian_inverse[0:4, 0:3] * v_mid_tip.transpose()).transpose()[0, 0:3]
-            back_v_theta = (back_jacobian_inverse[0:4, 0:3] * v_back_tip.transpose()).transpose()[0, 0:3]
-            # front_v_theta = (front_jacobian_inverse * V_front.transpose()).transpose()[0, 0:3]
-            # mid_v_theta = (mid_jacobian_inverse * V_mid.transpose()).transpose()[0, 0:3]
-            # back_v_theta = (back_jacobian_inverse * V_back.transpose()).transpose()[0, 0:3]
+            # front_v_theta = (front_jacobian_inverse[0:3, 0:3] * v_front_tip.transpose()).transpose()[0, 0:3]
+            # mid_v_theta = (mid_jacobian_inverse[0:3, 0:3] * v_mid_tip.transpose()).transpose()[0, 0:3]
+            # back_v_theta = (back_jacobian_inverse[0:3, 0:3] * v_back_tip.transpose()).transpose()[0, 0:3]
+            front_v_theta = (front_jacobian_inverse * V_front.transpose()).transpose()[0, 0:3]
+            mid_v_theta = (mid_jacobian_inverse * V_mid.transpose()).transpose()[0, 0:3]
+            back_v_theta = (back_jacobian_inverse * V_back.transpose()).transpose()[0, 0:3]
 
             # print("front_v_theta", front_v_theta)
             # print("mid_v_theta", mid_v_theta)
@@ -251,11 +265,12 @@ class Hexapod(object):
             stance_jointIDs[6:9] = [3 * back_stance_legID + i for i in range(3)]
             p.setJointMotorControlArray(robot.hexapod, stance_jointIDs, p.POSITION_CONTROL, stance_joint_positions_, forces=[100]*9)
             p.stepSimulation()
-            time.sleep(0.05)
+            time.sleep(0.01)
             # 更新状态和误差
+            self.wz = p.readUserDebugParameter(self.w_debugId, self.physicsClient)
             Rx = rot_x(p.readUserDebugParameter(self.rot_x_id, self.physicsClient))
             Ry = rot_y(p.readUserDebugParameter(self.rot_y_id, self.physicsClient))
-            Rz = rot_z(p.readUserDebugParameter(self.rot_z_id, self.physicsClient))
+            Rz = rot_z(self.wz)
             self.height_d = p.readUserDebugParameter(self.body_height_id, self.physicsClient)
             self.Rd = Rz * Ry * Rx
             self.pcd[2, 0] = self.height_d
@@ -271,18 +286,19 @@ class Hexapod(object):
             r2_ = np.matrix(mid_tip)
             r3_ = np.matrix(back_tip)
             pc = [r1_0[0,0] - r1_[0,0], r1_0[0,1] - r1_[0,1], -(front_tip[0][2] + mid_tip[0][2] + back_tip[0][2]) / 3]
+            pc_dot = []
             pc = np.matrix(pc).transpose()
             qc = p.getBasePositionAndOrientation(self.hexapod, self.physicsClient)[1]
             R = np.matrix(p.getMatrixFromQuaternion(qc)).reshape((3,3)) * rot_z(-np.pi / 2)
             pos_error = self.pcd - pc
             pos_error_norm = np.linalg.norm(pos_error)
-            pcd_dot = self.Kp * (pos_error)
+            pcd_dot = self.kpp * (pos_error)
             # print("pos_error", pos_error.transpose())
             # print("pcd", self.pcd.transpose())
             # print("pc", pc.transpose())
             R_so3 = np.matrix(sp.SO3(self.Rd * R.transpose()).log()).transpose()
             R_so3_error_norm = np.linalg.norm(R_so3)
-            wbd = self.Kw * R_so3
+            wbd = self.kwp * R_so3
             r1 = r1_
             r2 = r2_
             r3 = r3_
@@ -338,7 +354,7 @@ class Hexapod(object):
             swing_joint_positions_ = [front_body_joint_pos, front_thigh_joint_pos, front_shank_joint_pos, mid_body_joint_pos, mid_thigh_joint_pos, mid_shank_joint_pos, back_body_joint_pos, back_thigh_joint_pos, back_shank_joint_pos]
             p.setJointMotorControlArray(self.hexapod, swing_jointIDs, p.POSITION_CONTROL, swing_joint_positions_, forces=[100]*9)
             p.stepSimulation()
-            time.sleep(0.05)
+            time.sleep(0.01)
         # Swinging leg
         swing_steps = 80
         for i in range(swing_steps):
@@ -354,7 +370,7 @@ class Hexapod(object):
             swing_joint_positions_ = [front_body_joint_pos, front_thigh_joint_pos, front_shank_joint_pos, mid_body_joint_pos, mid_thigh_joint_pos, mid_shank_joint_pos, back_body_joint_pos, back_thigh_joint_pos, back_shank_joint_pos]
             p.setJointMotorControlArray(self.hexapod, swing_jointIDs, p.POSITION_CONTROL, swing_joint_positions_, forces=[100]*9)
             p.stepSimulation()
-            time.sleep(0.05)
+            time.sleep(0.01)
         
 
 def sequence_change(list):

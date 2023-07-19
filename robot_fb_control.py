@@ -2,7 +2,6 @@
 import pybullet as p
 import pybullet_data
 import numpy as np
-import open3d as o3d
 import os
 import time
 import math
