@@ -246,15 +246,16 @@ class Hexapod(object):
             front_joint_positions_ = (np.asarray(front_joint_positions) + np.asarray(front_delta)).tolist()[0]
             mid_joint_positions_ = (np.asarray(mid_joint_positions) + np.asarray(mid_delta)).tolist()[0]
             back_joint_positions_ = (np.asarray(back_joint_positions) + np.asarray(back_delta)).tolist()[0]
+
+            self.front_tip_estimate = self.k.fk(front_joint_positions_, front_stance_legID)
+            self.mid_tip_estimate = self.k.fk(mid_joint_positions_, mid_stance_legID)
+            self.back_tip_estimate = self.k.fk(back_joint_positions_, back_stance_legID)
+            valid_front_joint_positions, valid_mid_joint_positions, valid_back_joint_positions = self.checkvalidity()
             
-            if mid_stance_legID == 2 and mid_joint_positions_[2] > 0.3:
-                print("wrong joint position computed! right mid leg")
-            if mid_stance_legID == 3 and mid_joint_positions_[2] < -0.3:
-                print("wrong joint position computed! left mid leg")
             stance_joint_positions_ = [0] * 9
-            stance_joint_positions_[0:3] = front_joint_positions_
-            stance_joint_positions_[3:6] = mid_joint_positions_
-            stance_joint_positions_[6:9] = back_joint_positions_
+            stance_joint_positions_[0:3] = valid_front_joint_positions
+            stance_joint_positions_[3:6] = valid_mid_joint_positions
+            stance_joint_positions_[6:9] = valid_back_joint_positions
             stance_jointIDs = [0] * 9
             stance_jointIDs[0:3] = [3 * front_stance_legID + i for i in range(3)]
             stance_jointIDs[3:6] = [3 * mid_stance_legID + i for i in range(3)]
@@ -298,33 +299,6 @@ class Hexapod(object):
             # 计算机器人姿态误差
             R_so3 = np.matrix(sp.SO3(self.Rd * Rot.transpose()).log()).transpose()
             R_so3_error_norm = np.linalg.norm(R_so3)
-
-            # r1_ = np.matrix(front_tip)
-            # r2_ = np.matrix(mid_tip)
-            # r3_ = np.matrix(back_tip)
-            # pc = [r1_0[0,0] - r1_[0,0], r1_0[0,1] - r1_[0,1], -(front_tip[0][2] + mid_tip[0][2] + back_tip[0][2]) / 3]
-            # pc_dot = []
-            # pc = np.matrix(pc).transpose()
-            # qc = p.getBasePositionAndOrientation(self.hexapod, self.physicsClient)[1]
-            # R = np.matrix(p.getMatrixFromQuaternion(qc)).reshape((3,3)) * rot_z(-np.pi / 2)
-            # pos_error = self.pcd - pc
-            # pos_error_norm = np.linalg.norm(pos_error)
-            # pcd_dot = self.kpp * (pos_error)
-            # print("pos_error", pos_error.transpose())
-            # print("pcd", self.pcd.transpose())
-            # print("pc", pc.transpose())
-            # R_so3 = np.matrix(sp.SO3(self.Rd * R.transpose()).log()).transpose()
-            # R_so3_error_norm = np.linalg.norm(R_so3)
-            # wbd = self.Kwp * R_so3
-            # r1 = r1_
-            # r2 = r2_
-            # r3 = r3_
-        # print("pos_error_norm", pos_error_norm)
-        # print("R_so3_norm", R_so3_error_norm)
-        # print("pcd", self.pcd.transpose())
-        # print("pc", pc.transpose())
-        # print("pos_error", pos_error.transpose())
-        # print("Stance Leg ")
 
     def swing_controller(self):
         self.swingLegID = [i for i, x in enumerate(self.cycle_leg_number_) if x == 0]
@@ -388,7 +362,44 @@ class Hexapod(object):
             p.setJointMotorControlArray(self.hexapod, swing_jointIDs, p.POSITION_CONTROL, swing_joint_positions_)
             p.stepSimulation()
             time.sleep(0.01)
-        
+    
+    def checkvalidity(self):
+        valid_front_tip = self.front_tip_estimate
+        valid_mid_tip = self.mid_tip_estimate
+        valid_back_tip = self.back_tip_estimate
+        for id in self.stanceLegID:
+            if id == 0:
+                valid_front_tip[0, 0] = np.clip(self.front_tip_estimate[0, 0], 0.24, 0.44)
+                valid_front_tip[0, 1] = np.clip(self.front_tip_estimate[0, 1], -0.41, -0.34)
+                valid_front_tip[0, 2] = np.clip(self.front_tip_estimate[0, 2], -0.45, -0.30)
+                valid_front_joint_position = self.k.ik(valid_front_tip, id)
+            if id == 1:
+                valid_front_tip[0, 0] = np.clip(self.front_tip_estimate[0, 0], 0.24, 0.44)
+                valid_front_tip[0, 1] = np.clip(self.front_tip_estimate[0, 1], 0.34, 0.41)
+                valid_front_tip[0, 2] = np.clip(self.front_tip_estimate[0, 2], -0.45, -0.30)
+                valid_front_joint_position = self.k.ik(valid_front_tip, id)
+            if id == 2:
+                valid_mid_tip[0, 0] = np.clip(self.mid_tip_estimate[0, 0], -0.1, 0.1)
+                valid_mid_tip[0, 1] = np.clip(self.mid_tip_estimate[0, 1], -0.41, -0.34)
+                valid_mid_tip[0, 2] = np.clip(self.mid_tip_estimate[0, 2], -0.45, -0.30)
+                valid_mid_joint_position = self.k.ik(valid_mid_tip, id)
+            if id == 3:
+                valid_mid_tip[0, 0] = np.clip(self.mid_tip_estimate[0, 0], -0.1, 0.1)
+                valid_mid_tip[0, 1] = np.clip(self.mid_tip_estimate[0, 1], 0.34, 0.41)
+                valid_mid_tip[0, 2] = np.clip(self.mid_tip_estimate[0, 2], -0.45, -0.30)
+                valid_mid_joint_position = self.k.ik(valid_mid_tip, id)
+            if id == 4:
+                valid_back_tip[0, 0] = np.clip(self.back_tip_estimate[0, 0], -0.44, -0.24)
+                valid_back_tip[0, 1] = np.clip(self.back_tip_estimate[0, 1], -0.41, -0.34)
+                valid_back_tip[0, 2] = np.clip(self.back_tip_estimate[0, 2], -0.45, -0.30)
+                valid_back_joint_position = self.k.ik(valid_back_tip, id)
+            if id == 5:
+                valid_back_tip[0, 0] = np.clip(self.back_tip_estimate[0, 0], -0.44, -0.24)
+                valid_back_tip[0, 1] = np.clip(self.back_tip_estimate[0, 1], 0.34, 0.41)
+                valid_back_tip[0, 2] = np.clip(self.back_tip_estimate[0, 2], -0.45, -0.30)
+                valid_back_joint_position = self.k.ik(valid_back_tip, id)
+        return valid_front_joint_position, valid_mid_joint_position, valid_back_joint_position
+
 
 def sequence_change(list):
     for i in range(len(list)):

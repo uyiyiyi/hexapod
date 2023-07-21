@@ -140,7 +140,12 @@ class Kinematic(object):
 
 
 k = Kinematic()
-# print(k.fk([0.1,0,0], 0))
+print(k.fk([0,0,0], 0))
+print(k.fk([0,0,0], 1))
+print(k.fk([0,0,0], 2))
+print(k.fk([0,0,0], 3))
+print(k.fk([0,0,0], 4))
+print(k.fk([0,0,0], 5))
 # print(k.ik([0.3740209501807083, -0.3890747133925363, -0.3753941065956188], 0))
 # print(k.fk([-0.05,0,0], 1))
 # print(k.fk([0.05,0,0], 2))
