@@ -67,9 +67,9 @@ class Hexapod(object):
         self.alpha = 0
         self.height_d = 0.3754
         self.T = 1
-        self.Kpp = np.diag([80, 80, 120]) # [[1., 0., 0.], [0., 10., 0.], [0., 0., 10.]]
+        self.Kpp = np.diag([200, 300, 100]) # [[1., 0., 0.], [0., 10., 0.], [0., 0., 10.]]
         self.Kpd = np.diag([0, 0, 0])
-        self.Kwp = np.diag([60, 60, 80])
+        self.Kwp = np.diag([300, 300, 300])
         # self.kwd = np.diag([60, 60, 60])
 
     def gait(self):
@@ -103,51 +103,7 @@ class Hexapod(object):
         # Lowering leg
         self.lowering_foot()
 
-    def lowering_foot(self):
-        self.swingLegID = [i for i, x in enumerate(self.cycle_leg_number_) if x == 0]
-        body_target = np.pi / 18
-        thigh_target = 0.4
-        shank_target = 0.6
-        front_swing_legID = self.swingLegID[0]
-        mid_swing_legID = self.swingLegID[1]
-        back_swing_legID = self.swingLegID[2]
-        swing_jointIDs = [0] * 9
-        swing_jointIDs[0:3] = [3 * front_swing_legID + i for i in range(3)]
-        swing_jointIDs[3:6] = [3 * mid_swing_legID + i for i in range(3)]
-        swing_jointIDs[6:9] = [3 * back_swing_legID + i for i in range(3)]
-        for i in range(18):
-            self.joint_positions_[i] = p.getJointState(self.hexapod, self.joint_indices[i], self.physicsClient)[0]
-        front_joint_positions = self.joint_positions_[(3 * front_swing_legID): (3 * front_swing_legID + 3)]
-        mid_joint_positions = self.joint_positions_[(3 * mid_swing_legID): (3 * mid_swing_legID + 3)]
-        back_joint_positions = self.joint_positions_[(3 * back_swing_legID): (3 * back_swing_legID + 3)]
-
-        if front_swing_legID % 2 == 0:
-            front_joint_target = [body_target, -thigh_target, shank_target]
-        else:
-            front_joint_target = [-body_target, thigh_target, -shank_target]
-        if mid_swing_legID % 2 == 0:
-            mid_joint_target = [body_target, -thigh_target, shank_target]
-        else:
-            mid_joint_target = [-body_target, thigh_target, -shank_target]
-        if back_swing_legID % 2 == 0:
-            back_joint_target = [body_target, -thigh_target, shank_target]
-        else:
-            back_joint_target = [-body_target, thigh_target, -shank_target]
-        lower_steps = 100
-        for i in range(lower_steps):
-            front_body_joint_pos = front_joint_target[0]
-            front_thigh_joint_pos = front_joint_positions[1] - front_joint_positions[1] / lower_steps * (i + 1)
-            front_shank_joint_pos = front_joint_positions[2] - front_joint_positions[2] / lower_steps * (i + 1)
-            mid_body_joint_pos = mid_joint_target[0]
-            mid_thigh_joint_pos = mid_joint_positions[1] - mid_joint_positions[1] / lower_steps * (i + 1)
-            mid_shank_joint_pos = mid_joint_positions[2] - mid_joint_positions[2] / lower_steps * (i + 1)
-            back_body_joint_pos = back_joint_target[0]
-            back_thigh_joint_pos = back_joint_positions[1] - back_joint_positions[1] / lower_steps * (i + 1)
-            back_shank_joint_pos = back_joint_positions[2] - back_joint_positions[2] / lower_steps * (i + 1)
-            swing_joint_positions_ = [front_body_joint_pos, front_thigh_joint_pos, front_shank_joint_pos, mid_body_joint_pos, mid_thigh_joint_pos, mid_shank_joint_pos, back_body_joint_pos, back_thigh_joint_pos, back_shank_joint_pos]
-            p.setJointMotorControlArray(self.hexapod, swing_jointIDs, p.POSITION_CONTROL, swing_joint_positions_)
-            p.stepSimulation()
-            time.sleep(0.01)
+    
 
     def stance_controller(self):
         # 计算支撑腿序号
@@ -192,9 +148,9 @@ class Hexapod(object):
         # 计算机器人姿态误差
         R_so3 = np.matrix(sp.SO3(self.Rd * Rot.transpose()).log()).transpose()
         R_so3_error_norm = np.linalg.norm(R_so3)
-        while pos_error_norm > 0.03 or R_so3_error_norm > 0.1:
+        while pos_error_norm > 0.02 or R_so3_error_norm > 0.1:
             print("pos_error", pos_error)
-            # print("R_so3", R_so3)
+            print("R_so3", R_so3)
             # print("pos_error_norm", pos_error_norm)
             # print("R_so3_norm", R_so3_error_norm)
             # 位置PD控制，姿态P控制
@@ -272,9 +228,9 @@ class Hexapod(object):
             Rz = rot_z(self.wz)
             self.height_d = p.readUserDebugParameter(self.body_height_id, self.physicsClient)
             qc = p.getBasePositionAndOrientation(self.hexapod, self.physicsClient)[1]
-            yaw = p.getEulerFromQuaternion(qc)[2] - np.pi / 2
-            Rz = rot_z(self.alpha + yaw)
-            self.Rd = Rz * Ry * Rx
+            # yaw = p.getEulerFromQuaternion(qc)[2] - np.pi / 2
+            # Rz = rot_z(self.alpha + yaw)
+            # self.Rd = Rz * Ry * Rx
             self.pcd[2, 0] = self.height_d
             for i in range(18):
                 self.joint_positions[i] = p.getJointState(self.hexapod, self.joint_indices[i], self.physicsClient)[0]
@@ -304,9 +260,11 @@ class Hexapod(object):
             R_so3 = np.matrix(sp.SO3(self.Rd * Rot.transpose()).log()).transpose()
             R_so3_error_norm = np.linalg.norm(R_so3)
 
+            # print("yaw desired = ", p.getEulerFrom)
+
     def swing_controller(self):
         self.swingLegID = [i for i, x in enumerate(self.cycle_leg_number_) if x == 0]
-        body_target = np.pi / 18
+        body_target = self.k.ik([0.34 + self.stride / 2, -0.3907771798601381, -0.3753941065956188], 0)[0]
         thigh_target = 0.4
         shank_target = 0.6
         front_swing_legID = self.swingLegID[0]
@@ -367,6 +325,52 @@ class Hexapod(object):
             p.stepSimulation()
             time.sleep(0.01)
     
+    def lowering_foot(self):
+        self.swingLegID = [i for i, x in enumerate(self.cycle_leg_number_) if x == 0]
+        body_target = self.k.ik([0.34 + self.stride / 2, -0.3907771798601381, -0.3753941065956188], 0)[0]
+        thigh_target = 0.4
+        shank_target = 0.6
+        front_swing_legID = self.swingLegID[0]
+        mid_swing_legID = self.swingLegID[1]
+        back_swing_legID = self.swingLegID[2]
+        swing_jointIDs = [0] * 9
+        swing_jointIDs[0:3] = [3 * front_swing_legID + i for i in range(3)]
+        swing_jointIDs[3:6] = [3 * mid_swing_legID + i for i in range(3)]
+        swing_jointIDs[6:9] = [3 * back_swing_legID + i for i in range(3)]
+        for i in range(18):
+            self.joint_positions_[i] = p.getJointState(self.hexapod, self.joint_indices[i], self.physicsClient)[0]
+        front_joint_positions = self.joint_positions_[(3 * front_swing_legID): (3 * front_swing_legID + 3)]
+        mid_joint_positions = self.joint_positions_[(3 * mid_swing_legID): (3 * mid_swing_legID + 3)]
+        back_joint_positions = self.joint_positions_[(3 * back_swing_legID): (3 * back_swing_legID + 3)]
+
+        if front_swing_legID % 2 == 0:
+            front_joint_target = [body_target, -thigh_target, shank_target]
+        else:
+            front_joint_target = [-body_target, thigh_target, -shank_target]
+        if mid_swing_legID % 2 == 0:
+            mid_joint_target = [body_target, -thigh_target, shank_target]
+        else:
+            mid_joint_target = [-body_target, thigh_target, -shank_target]
+        if back_swing_legID % 2 == 0:
+            back_joint_target = [body_target, -thigh_target, shank_target]
+        else:
+            back_joint_target = [-body_target, thigh_target, -shank_target]
+        lower_steps = 100
+        for i in range(lower_steps):
+            front_body_joint_pos = front_joint_target[0]
+            front_thigh_joint_pos = front_joint_positions[1] - front_joint_positions[1] / lower_steps * (i + 1)
+            front_shank_joint_pos = front_joint_positions[2] - front_joint_positions[2] / lower_steps * (i + 1)
+            mid_body_joint_pos = mid_joint_target[0]
+            mid_thigh_joint_pos = mid_joint_positions[1] - mid_joint_positions[1] / lower_steps * (i + 1)
+            mid_shank_joint_pos = mid_joint_positions[2] - mid_joint_positions[2] / lower_steps * (i + 1)
+            back_body_joint_pos = back_joint_target[0]
+            back_thigh_joint_pos = back_joint_positions[1] - back_joint_positions[1] / lower_steps * (i + 1)
+            back_shank_joint_pos = back_joint_positions[2] - back_joint_positions[2] / lower_steps * (i + 1)
+            swing_joint_positions_ = [front_body_joint_pos, front_thigh_joint_pos, front_shank_joint_pos, mid_body_joint_pos, mid_thigh_joint_pos, mid_shank_joint_pos, back_body_joint_pos, back_thigh_joint_pos, back_shank_joint_pos]
+            p.setJointMotorControlArray(self.hexapod, swing_jointIDs, p.POSITION_CONTROL, swing_joint_positions_)
+            p.stepSimulation()
+            time.sleep(0.01)
+
     def checkvalidity(self):
         valid_front_tip = self.front_tip_estimate
         valid_mid_tip = self.mid_tip_estimate
