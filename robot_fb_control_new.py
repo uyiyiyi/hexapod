@@ -42,7 +42,7 @@ class Hexapod(object):
         self.planeId = p.loadURDF("urdf/plane.urdf", baseOrientation=p.getQuaternionFromEuler([0,0,0]))
         # self.blockId = p.loadURDF("urdf/block.urdf", [1,0,0], baseOrientation=p.getQuaternionFromEuler([0,0,0]), useFixedBase=True)
         # self.planeId = p.loadURDF("terrain.urdf", baseOrientation=p.getQuaternionFromEuler([0,0,0]))
-        self.hexapod = p.loadURDF("robot_liuzu/urdf/robot_liuzu.urdf",[0,0,0.3755], p.getQuaternionFromEuler([0,0,np.pi/2]))
+        self.hexapod = p.loadURDF("robot_liuzu/urdf/robot_liuzu.urdf",[0,0,0.37], p.getQuaternionFromEuler([0,0,np.pi/2]))
         p.setJointMotorControlArray(self.hexapod, [i for i in range(18)], p.POSITION_CONTROL, [0.0] * 18)
         self.v_debugId = p.addUserDebugParameter("linear_velocity", -0.075, 0.075, 0.0, self.physicsClient)
         self.w_debugId = p.addUserDebugParameter("angular_velocity", -0.262, 0.262, 0.0, self.physicsClient)
@@ -67,9 +67,9 @@ class Hexapod(object):
         self.alpha = 0
         self.height_d = 0.3754
         self.T = 1
-        self.Kpp = np.diag([60, 60, 20]) # [[1., 0., 0.], [0., 10., 0.], [0., 0., 10.]]
-        self.Kpd = np.diag([-10, -20, 50])
-        self.Kwp = np.diag([60, 60, 20])
+        self.Kpp = np.diag([80, 80, 120]) # [[1., 0., 0.], [0., 10., 0.], [0., 0., 10.]]
+        self.Kpd = np.diag([0, 0, 0])
+        self.Kwp = np.diag([60, 60, 80])
         # self.kwd = np.diag([60, 60, 60])
 
     def gait(self):
@@ -186,11 +186,13 @@ class Hexapod(object):
         Rot = np.matrix(p.getMatrixFromQuaternion(qc)).reshape((3,3)) * rot_z(-np.pi / 2)
         # 计算机器人位置误差
         pos_error = self.pcd - np.array([[OO_[0, 0], OO_[1, 0], -(front_tip[0][2] + mid_tip[0][2] + back_tip[0][2]) / 3]]).transpose()
-        pos_error_norm = np.linalg.norm(pos_error)
+        error = np.array([pos_error[0, 0], pos_error[2, 0]])
+        pos_error_norm = np.linalg.norm(error)
+        # pos_error_norm = np.linalg.norm(pos_error)
         # 计算机器人姿态误差
         R_so3 = np.matrix(sp.SO3(self.Rd * Rot.transpose()).log()).transpose()
         R_so3_error_norm = np.linalg.norm(R_so3)
-        while pos_error_norm > 0.02 or R_so3_error_norm > 0.1:
+        while pos_error_norm > 0.03 or R_so3_error_norm > 0.1:
             print("pos_error", pos_error)
             # print("R_so3", R_so3)
             # print("pos_error_norm", pos_error_norm)
@@ -295,7 +297,9 @@ class Hexapod(object):
             Rot = np.matrix(p.getMatrixFromQuaternion(qc)).reshape((3,3)) * rot_z(-np.pi / 2)
             # 计算机器人位置误差
             pos_error = self.pcd - np.array([[OO_[0, 0], OO_[1, 0], -(front_tip[0][2] + mid_tip[0][2] + back_tip[0][2]) / 3]]).transpose()
-            pos_error_norm = np.linalg.norm(pos_error)
+            error = np.array([pos_error[0, 0], pos_error[2, 0]])
+            pos_error_norm = np.linalg.norm(error)
+            # pos_error_norm = np.linalg.norm(pos_error)
             # 计算机器人姿态误差
             R_so3 = np.matrix(sp.SO3(self.Rd * Rot.transpose()).log()).transpose()
             R_so3_error_norm = np.linalg.norm(R_so3)
@@ -369,35 +373,35 @@ class Hexapod(object):
         valid_back_tip = self.back_tip_estimate
         for id in self.stanceLegID:
             if id == 0:
-                valid_front_tip[0, 0] = np.clip(self.front_tip_estimate[0, 0], 0.24, 0.44)
-                valid_front_tip[0, 1] = np.clip(self.front_tip_estimate[0, 1], -0.41, -0.34)
-                valid_front_tip[0, 2] = np.clip(self.front_tip_estimate[0, 2], -0.45, -0.30)
-                valid_front_joint_position = self.k.ik(valid_front_tip, id)
+                valid_front_tip[0][0] = np.clip(self.front_tip_estimate[0][0], 0.24, 0.44)
+                valid_front_tip[0][1] = np.clip(self.front_tip_estimate[0][1], -0.41, -0.34)
+                valid_front_tip[0][2] = np.clip(self.front_tip_estimate[0][2], -0.45, -0.30)
+                valid_front_joint_position = self.k.ik(valid_front_tip[0], id)
             if id == 1:
-                valid_front_tip[0, 0] = np.clip(self.front_tip_estimate[0, 0], 0.24, 0.44)
-                valid_front_tip[0, 1] = np.clip(self.front_tip_estimate[0, 1], 0.34, 0.41)
-                valid_front_tip[0, 2] = np.clip(self.front_tip_estimate[0, 2], -0.45, -0.30)
-                valid_front_joint_position = self.k.ik(valid_front_tip, id)
+                valid_front_tip[0][0] = np.clip(self.front_tip_estimate[0][0], 0.24, 0.44)
+                valid_front_tip[0][1] = np.clip(self.front_tip_estimate[0][1], 0.34, 0.41)
+                valid_front_tip[0][2] = np.clip(self.front_tip_estimate[0][2], -0.45, -0.30)
+                valid_front_joint_position = self.k.ik(valid_front_tip[0], id)
             if id == 2:
-                valid_mid_tip[0, 0] = np.clip(self.mid_tip_estimate[0, 0], -0.1, 0.1)
-                valid_mid_tip[0, 1] = np.clip(self.mid_tip_estimate[0, 1], -0.41, -0.34)
-                valid_mid_tip[0, 2] = np.clip(self.mid_tip_estimate[0, 2], -0.45, -0.30)
-                valid_mid_joint_position = self.k.ik(valid_mid_tip, id)
+                valid_mid_tip[0][0] = np.clip(self.mid_tip_estimate[0][0], -0.1, 0.1)
+                valid_mid_tip[0][1] = np.clip(self.mid_tip_estimate[0][1], -0.41, -0.34)
+                valid_mid_tip[0][2] = np.clip(self.mid_tip_estimate[0][2], -0.45, -0.30)
+                valid_mid_joint_position = self.k.ik(valid_mid_tip[0], id)
             if id == 3:
-                valid_mid_tip[0, 0] = np.clip(self.mid_tip_estimate[0, 0], -0.1, 0.1)
-                valid_mid_tip[0, 1] = np.clip(self.mid_tip_estimate[0, 1], 0.34, 0.41)
-                valid_mid_tip[0, 2] = np.clip(self.mid_tip_estimate[0, 2], -0.45, -0.30)
-                valid_mid_joint_position = self.k.ik(valid_mid_tip, id)
+                valid_mid_tip[0][0] = np.clip(self.mid_tip_estimate[0][0], -0.1, 0.1)
+                valid_mid_tip[0][1] = np.clip(self.mid_tip_estimate[0][1], 0.34, 0.41)
+                valid_mid_tip[0][2] = np.clip(self.mid_tip_estimate[0][2], -0.45, -0.30)
+                valid_mid_joint_position = self.k.ik(valid_mid_tip[0], id)
             if id == 4:
-                valid_back_tip[0, 0] = np.clip(self.back_tip_estimate[0, 0], -0.44, -0.24)
-                valid_back_tip[0, 1] = np.clip(self.back_tip_estimate[0, 1], -0.41, -0.34)
-                valid_back_tip[0, 2] = np.clip(self.back_tip_estimate[0, 2], -0.45, -0.30)
-                valid_back_joint_position = self.k.ik(valid_back_tip, id)
+                valid_back_tip[0][0] = np.clip(self.back_tip_estimate[0][0], -0.44, -0.24)
+                valid_back_tip[0][1] = np.clip(self.back_tip_estimate[0][1], -0.41, -0.34)
+                valid_back_tip[0][2] = np.clip(self.back_tip_estimate[0][2], -0.45, -0.30)
+                valid_back_joint_position = self.k.ik(valid_back_tip[0], id)
             if id == 5:
-                valid_back_tip[0, 0] = np.clip(self.back_tip_estimate[0, 0], -0.44, -0.24)
-                valid_back_tip[0, 1] = np.clip(self.back_tip_estimate[0, 1], 0.34, 0.41)
-                valid_back_tip[0, 2] = np.clip(self.back_tip_estimate[0, 2], -0.45, -0.30)
-                valid_back_joint_position = self.k.ik(valid_back_tip, id)
+                valid_back_tip[0][0] = np.clip(self.back_tip_estimate[0][0], -0.44, -0.24)
+                valid_back_tip[0][1] = np.clip(self.back_tip_estimate[0][1], 0.34, 0.41)
+                valid_back_tip[0][2] = np.clip(self.back_tip_estimate[0][2], -0.45, -0.30)
+                valid_back_joint_position = self.k.ik(valid_back_tip[0], id)
         return valid_front_joint_position, valid_mid_joint_position, valid_back_joint_position
 
 
